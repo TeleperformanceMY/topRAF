@@ -1,0 +1,59 @@
+<!-- index.html for influencer portal -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RAF Link Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        input, button { padding: 10px; margin: 10px 0; width: 100%; }
+        #result { margin-top: 20px; padding: 15px; background: #e8f5e9; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RAF Link Generator</h1>
+        <p>Enter your BMS ID to generate your personalized referral link:</p>
+        
+        <input type="text" id="bmsId" placeholder="Enter your BMS ID (e.g., 1234567)">
+        <button onclick="generateLink()">Generate Link</button>
+        
+        <div id="result">
+            <h3>Your Personalized RAF Link:</h3>
+            <p id="generatedLink"></p>
+            <button onclick="copyLink()">Copy Link</button>
+            <div id="qrcode"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script>
+        function generateLink() {
+            const bmsId = document.getElementById('bmsId').value.trim();
+            if (!bmsId) {
+                alert('Please enter your BMS ID');
+                return;
+            }
+            
+            const link = `https://teleperformancemy.github.io/RAF/${bmsId}`;
+            document.getElementById('generatedLink').textContent = link;
+            document.getElementById('result').style.display = 'block';
+            
+            // Generate QR code
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById('qrcode'), {
+                text: link,
+                width: 200,
+                height: 200
+            });
+        }
+        
+        function copyLink() {
+            const link = document.getElementById('generatedLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
